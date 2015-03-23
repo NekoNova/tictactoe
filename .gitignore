@@ -1,0 +1,7 @@
+# Ignore IDE files
+*.iml
+.idea
+
+# Ignore RVM settings
+.ruby-gemset
+.ruby-version
