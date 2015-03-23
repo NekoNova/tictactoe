@@ -13,6 +13,13 @@
 # The other reason being that my knowledge about JavaScript is limited compared to my Ruby knowledge.
 #
 require "sinatra"
+require "json"
+require "yaml"
+require "haml"
+require "./lib/game"
+
+enable :sessions
+set :session_secret, "tic_tac_toe_programming_test_secret"
 
 # Route definitions
 # =================
@@ -32,7 +39,11 @@ end
 # When the game is properly set up, the game screen is shown and all feature requests are being done
 # through the JavaScript library to ensure that the settings cannot be tampered with.
 post "/game" do
+  # This is actually an anti-pattern. We should never, ever store objects inside our session.
+  # But in order to keep the test simple, I will ignore this for now.
+  session[:game] = YAML::dump(Game.new(params[:player_1], params[:player_2]))
 
+  haml :game
 end
 
 # Set's the move by a player.
@@ -40,21 +51,28 @@ end
 #
 # - row: The row the player clicked on
 # - col: The column the player clicked on
-# - player: The player that executed the action, either 1 or 2
+# - val: The value being set for the field.
 #
 # If the move is considered valid, then HTTP Status 200 will be returned and
 # the game can continue.
 # If the move is considered invalid, then HTTP Status 400 will be returned.
 post "/game/set" do
+  @game = YAML::load(session[:game])
 
-end
+  if @game.set(params[:row], params[:col], params[:val])
+    response ={
+        moves: @game.moves,
+        active_player: @game.active_player,
+        status: @game.winner? ? "ongoing" : "game over",
+        winner: @game.winner
+    }
 
-# Returns a JSON hash containing the current status of the game.
-# The information returned will be:
-#
-# active_player: The currently active player, either 1 or 2
-# status: ongoing/game over
-# winner: The player who won the game, either 1 or 2
-get "/game/status" do
+    session[:game] = YAML::dump(@game)
 
+    status 200
+    content_type :json
+    response.to_json
+  else
+    status 400
+  end
 end
