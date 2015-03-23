@@ -31,7 +31,7 @@ class Game
   # Sets the provided value in the specified row and column of the board.
   # If the set operation succeeds, true is returned; otherwise false.
   def set(row, col, val)
-    if [PLAYER_1_SYMBOL, PLAYER_2_SYMBOL].include?(val)
+    if [PLAYER_1_SYMBOL, PLAYER_2_SYMBOL].include?(val) && @grid[row][col] == nil
       @active_player = val.eql?(PLAYER_1_SYMBOL) ? @player_2 : @player_1
       @grid[row][col] = val
       @moves += 1

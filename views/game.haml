@@ -1,1 +1,37 @@
 %h1 TicTacToe - The Game
+.container
+  .row
+    .col-md-3{ style: "text-align: center;" }
+      %h2
+        Player 1: {{player_1}}
+    .col-md-3{ style: "text-align: center;" }
+      %h3
+        {{winner == null | winner : "Active Player:" + active_player : "Winner:" + winner}}
+    .col-md-3{ style: "text-align: center;" }
+      %h2
+        Player 2: {{player_2}}
+  .row
+    .col-md-3
+    .col-md-3{ style: "text-align: center;" }
+      %table.table.table-bordered
+        %tr
+          %td{ :"ng-click" => "setField($event,0,0); $event.stopPropagation()" }
+          %td{ :"ng-click" => "setField($event,0,1); $event.stopPropagation()" }
+          %td{ :"ng-click" => "setField($event,0,2); $event.stopPropagation()" }
+        %tr
+          %td{ :"ng-click" => "setField($event,1,0); $event.stopPropagation()" }
+          %td{ :"ng-click" => "setField($event,1,1); $event.stopPropagation()" }
+          %td{ :"ng-click" => "setField($event,1,2); $event.stopPropagation()" }
+        %tr
+          %td{ :"ng-click" => "setField($event,2,0); $event.stopPropagation()" }
+          %td{ :"ng-click" => "setField($event,2,1); $event.stopPropagation()" }
+          %td{ :"ng-click" => "setField($event,2,2); $event.stopPropagation()" }
+    .col-md-3
+  .row
+    .col-md-3
+    .col-md-3{ :"ng-if" => "winner || moves == 9", style: "text-align: center;" }
+      %button{ :"ng-click" => "resetGame();" }
+        Reset Game
+      %button{ :"ng-click" => "displayRanking();" }
+        Display Ranking
+    .col-md-3

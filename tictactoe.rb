@@ -50,20 +50,25 @@ end
 # This is called from the game using the following parameters:
 #
 # - row: The row the player clicked on
-# - col: The column the player clicked on
-# - val: The value being set for the field.
+# - column: The column the player clicked on
+# - active_player: The player that set the command.
 #
 # If the move is considered valid, then HTTP Status 200 will be returned and
 # the game can continue.
 # If the move is considered invalid, then HTTP Status 400 will be returned.
 post "/game/set" do
+  data = JSON.parse(request.body.read)  # Manual parsing of the submitted data
   @game = YAML::load(session[:game])
+  value = data["active_player"].eql?(@game.player_1) ? Game::PLAYER_1_SYMBOL : Game::PLAYER_2_SYMBOL
 
-  if @game.set(params[:row], params[:col], params[:val])
+  puts data
+  puts value
+
+  if @game.set(data["row"], data["column"], value)
     response ={
         moves: @game.moves,
         active_player: @game.active_player,
-        status: @game.winner? ? "ongoing" : "game over",
+        status: @game.winner? ? "game over" : "ongoing",
         winner: @game.winner
     }
 
@@ -75,4 +80,20 @@ post "/game/set" do
   else
     status 400
   end
+end
+
+# Returns the players stored in the Game as JSON.
+# This is called by Angular after submitting the information, to properly display this
+# on the Game page.
+get "/players.json" do
+  @game = YAML::load(session[:game])
+
+  status 200
+  content_type :json
+
+  {
+      player_1: @game.player_1,
+      player_2: @game.player_2,
+      active_player: @game.active_player
+  }.to_json
 end
