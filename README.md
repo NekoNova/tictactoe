@@ -35,3 +35,18 @@ The Front-End is being done with AngularJS. After browsing various Javascript Fr
 most to me, as it uses MVC and allows you to separate the JS completely from the application, binding it
 on the fly. **Spending most time here now, as I need to look up many things**, but I'm actually enjoying the work
 I'm doing with Angular, and slowly I'm becoming more familiar with it.
+
+## Installation and running the game
+In order to prepare the environment, you need to have the following installed:
+
+- Ruby or RVM
+- Bundler
+
+Run the following commands
+
+    bundle install
+    ruby tictactoe.rb
+
+After that, open **Chrome** and redirect it to `http://localhost:4567`
+
+To stop the webserver, simply press `ctrl + c` in the terminal to kill the Sinatra app.
