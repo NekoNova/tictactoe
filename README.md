@@ -50,3 +50,7 @@ Run the following commands
 After that, open **Chrome** and redirect it to `http://localhost:4567`
 
 To stop the webserver, simply press `ctrl + c` in the terminal to kill the Sinatra app.
+
+
+# Screenshot
+![screenshot](http://i.imgur.com/VLIXRXD.png)

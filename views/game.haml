@@ -1,11 +1,16 @@
 %body{ :"ng-controller" => "GameCtrl"}
   .container
     .row
-      %h1 TicTacToe - The Game
+      %h1
+        TicTacToe
+        .small
+          The Game
     .row
       .col-md-3{ style: "text-align: center;" }
         %h2
-          Player 1: {{player_1}}
+          Player 1:
+          .small
+            {{player_1}}
       .col-md-6{ style: "text-align: center;" }
         %h3{ :"ng-if" => "winner" } {{"Winner: " + winner}}
         %h3{ :"ng-if" => "!winner && moves != 9 && active_player == player_1" }
@@ -15,7 +20,9 @@
         %h3{ :"ng-if" => "moves == 9 && !winner" } Draw
       .col-md-3{ style: "text-align: center;" }
         %h2
-          Player 2: {{player_2}}
+          Player 2:
+          .small
+            {{player_2}}
     .row
       .col-md-3
       .col-md-6{ style: "text-align: center;" }
