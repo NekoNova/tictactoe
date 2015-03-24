@@ -1,41 +1,50 @@
-%h1 TicTacToe - The Game
-.container
-  .row
-    .col-md-3{ style: "text-align: center;" }
-      %h2
-        Player 1: {{player_1}}
-    .col-md-3{ style: "text-align: center;" }
-      %h3{ :"ng-if" => "winner" }
-        {{"Winner: " + winner}}
-      %h3{ :"ng-if" => "!winner && moves != 9" }
-        {{"Active Player:" + active_player}}
-      %h3{ :"ng-if" => "moves == 9" }
-        Draw
-    .col-md-3{ style: "text-align: center;" }
-      %h2
-        Player 2: {{player_2}}
-  .row
-    .col-md-3
-    .col-md-3{ style: "text-align: center;" }
-      %table.table.table-bordered
-        %tr
-          %td{ :"ng-click" => "setField($event,0,0); $event.stopPropagation()" }
-          %td{ :"ng-click" => "setField($event,0,1); $event.stopPropagation()" }
-          %td{ :"ng-click" => "setField($event,0,2); $event.stopPropagation()" }
-        %tr
-          %td{ :"ng-click" => "setField($event,1,0); $event.stopPropagation()" }
-          %td{ :"ng-click" => "setField($event,1,1); $event.stopPropagation()" }
-          %td{ :"ng-click" => "setField($event,1,2); $event.stopPropagation()" }
-        %tr
-          %td{ :"ng-click" => "setField($event,2,0); $event.stopPropagation()" }
-          %td{ :"ng-click" => "setField($event,2,1); $event.stopPropagation()" }
-          %td{ :"ng-click" => "setField($event,2,2); $event.stopPropagation()" }
-    .col-md-3
-  .row
-    .col-md-3
-    .col-md-3{ :"ng-if" => "winner || moves == 9", style: "text-align: center;" }
-      %button.btn.btn-danger{ :"ng-click" => "resetGame();" }
-        Reset Game
-      %button.btn.btn-info{ :"ng-click" => "displayRanking();" }
-        Display Ranking
-    .col-md-3
+%body{ :"ng-controller" => "GameCtrl"}
+  .container
+    .row
+      %h1 TicTacToe - The Game
+    .row
+      .col-md-3{ style: "text-align: center;" }
+        %h2
+          Player 1: {{player_1}}
+      .col-md-6{ style: "text-align: center;" }
+        %h3{ :"ng-if" => "winner" } {{"Winner: " + winner}}
+        %h3{ :"ng-if" => "!winner && moves != 9 && active_player == player_1" }
+          %span.glyphicon.glyphicon-chevron-left
+        %h3{ :"ng-if" => "!winner && moves != 9 && active_player == player_2" }
+          %span.glyphicon.glyphicon-chevron-right
+        %h3{ :"ng-if" => "moves == 9 && !winner" } Draw
+      .col-md-3{ style: "text-align: center;" }
+        %h2
+          Player 2: {{player_2}}
+    .row
+      .col-md-3
+      .col-md-6{ style: "text-align: center;" }
+        %table.table.table-bordered
+          %tr
+            %td{ :"ng-click" => "setField($event,0,0); $event.stopPropagation()" }
+            %td{ :"ng-click" => "setField($event,0,1); $event.stopPropagation()" }
+            %td{ :"ng-click" => "setField($event,0,2); $event.stopPropagation()" }
+          %tr
+            %td{ :"ng-click" => "setField($event,1,0); $event.stopPropagation()" }
+            %td{ :"ng-click" => "setField($event,1,1); $event.stopPropagation()" }
+            %td{ :"ng-click" => "setField($event,1,2); $event.stopPropagation()" }
+          %tr
+            %td{ :"ng-click" => "setField($event,2,0); $event.stopPropagation()" }
+            %td{ :"ng-click" => "setField($event,2,1); $event.stopPropagation()" }
+            %td{ :"ng-click" => "setField($event,2,2); $event.stopPropagation()" }
+        .progress.progress-striped.active
+          .progress-bar{role: "progressbar", :"aria-valuenow" => "{{moves}}", :"aria-valuemin" => 0, :"aria-valuemax" => 9}
+            %span.sr-only
+              {{moves}} moves out of 9
+      .col-md-3
+    .row
+      .col-md-3
+      .col-md-6{ :"ng-if" => "winner || moves == 9", style: "text-align: center;" }
+        .btn-group
+          %button.btn.btn-danger{ :"ng-click" => "resetGame();" }
+            %span.glyphicon.glyphicon-refresh
+            Reset Game
+          %button.btn.btn-info{ :"ng-click" => "displayRanking();" }
+            %span.glyphicon.glyphicon-th-list
+            Scoreboard
+      .col-md-3

@@ -1,24 +1,25 @@
-.container
-  %h1 Welcome to TicTacToe
-  %p
-    Welcome to TicTacToe.
-    %br
-    In order to get started, please enter both player names and press the button to continue.
-  %fieldset
-    %legend Players
-    %form{ action: "/game", method: "post"}
-      .container
-        .row
-          .col-md-3
-            %label{ for: :player_1 }
-            Player 1
-            %input{ type: :text_field, name: "player_1", placeholder: "player 1", required: true}
-        .row
-          .col-md-3
-            %label{ for: :player_2 }
-            Player 2
-            %input{ type: :text_field, name: "player_2", placeholder: "player 2", required: true}
-        .row
-          .col-md-1.col-md-offset-1
-            %button.btn.btn-default{ type: :submit, name: "Submit"}
-              Play
+%body
+  .container
+    %h1 Welcome to TicTacToe
+    %p
+      Welcome to TicTacToe.
+      %br
+      In order to get started, please enter both player names and press the button to continue.
+    %fieldset
+      %legend Players
+      %form{ action: "/game", method: "post"}
+        .container
+          .row
+            .col-md-3
+              %label{ for: :player_1 }
+              Player 1
+              %input{ type: :text_field, name: "player_1", placeholder: "player 1", required: true}
+          .row
+            .col-md-3
+              %label{ for: :player_2 }
+              Player 2
+              %input{ type: :text_field, name: "player_2", placeholder: "player 2", required: true}
+          .row
+            .col-md-1.col-md-offset-1
+              %button.btn.btn-default{ type: :submit, name: "Submit"}
+                Play
