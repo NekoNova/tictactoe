@@ -42,7 +42,14 @@ post "/game" do
   # This is actually an anti-pattern. We should never, ever store objects inside our session.
   # But in order to keep the test simple, I will ignore this for now.
   session[:game] = YAML::dump(Game.new(params[:player_1], params[:player_2]))
+  redirect to('/game')
+end
 
+# Displays the actual game page.
+# This is placed into a separate route to prevent the game from constantly re-creating itself after
+# it was initialized.
+# Now all actions can redirect themselves to the game page again.
+get "/game" do
   haml :game
 end
 
@@ -61,15 +68,11 @@ post "/game/set" do
   @game = YAML::load(session[:game])
   value = data["active_player"].eql?(@game.player_1) ? Game::PLAYER_1_SYMBOL : Game::PLAYER_2_SYMBOL
 
-  puts data
-  puts value
-
   if @game.set(data["row"], data["column"], value)
     response ={
         moves: @game.moves,
         active_player: @game.active_player,
-        status: @game.winner? ? "game over" : "ongoing",
-        winner: @game.winner
+        winner: @game.winner? ? @game.winner : nil
     }
 
     session[:game] = YAML::dump(@game)
@@ -80,6 +83,22 @@ post "/game/set" do
   else
     status 400
   end
+end
+
+# Resets the game, allowing the players to load the game again.
+# This is done over POST because we are changing the state of the game.
+post "/game/reset" do
+  @game = YAML::load(session[:game])
+  @game.init_game
+  session[:game] = YAML::dump(@game)
+end
+
+# Displays the score of both players.
+# Entering this screen ends the game.
+get "/score" do
+  @game = YAML::load(session[:game])
+  session[:game] = nil
+  haml :score
 end
 
 # Returns the players stored in the Game as JSON.

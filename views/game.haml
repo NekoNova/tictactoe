@@ -5,8 +5,12 @@
       %h2
         Player 1: {{player_1}}
     .col-md-3{ style: "text-align: center;" }
-      %h3
-        {{winner == null | winner : "Active Player:" + active_player : "Winner:" + winner}}
+      %h3{ :"ng-if" => "winner" }
+        {{"Winner: " + winner}}
+      %h3{ :"ng-if" => "!winner && moves != 9" }
+        {{"Active Player:" + active_player}}
+      %h3{ :"ng-if" => "moves == 9" }
+        Draw
     .col-md-3{ style: "text-align: center;" }
       %h2
         Player 2: {{player_2}}
@@ -30,8 +34,8 @@
   .row
     .col-md-3
     .col-md-3{ :"ng-if" => "winner || moves == 9", style: "text-align: center;" }
-      %button{ :"ng-click" => "resetGame();" }
+      %button.btn.btn-danger{ :"ng-click" => "resetGame();" }
         Reset Game
-      %button{ :"ng-click" => "displayRanking();" }
+      %button.btn.btn-info{ :"ng-click" => "displayRanking();" }
         Display Ranking
     .col-md-3

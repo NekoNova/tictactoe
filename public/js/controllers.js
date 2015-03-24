@@ -1,8 +1,8 @@
 var TicTacToeApp = angular.module('TicTacToeApp', []);
 
 // Define the controller for the Game Application that will be running TicTacToe Client side.
-TicTacToeApp.controller('GameCtrl', ['$scope', '$http', '$log',
-    function($scope, $http) {
+TicTacToeApp.controller('GameCtrl', ['$scope', '$http', '$window',
+    function($scope, $http, $window) {
         // Perform a get call to /players.json to obtain the registered player names
         // and store them on the scope of our application.
         $http.get('/players.json').success(function(data) {
@@ -33,7 +33,6 @@ TicTacToeApp.controller('GameCtrl', ['$scope', '$http', '$log',
                 // - update the current data
                 $scope.active_player = data.active_player;
                 $scope.moves = data.moves;
-                $scope.status = data.status;
                 $scope.winner = data.winner;
                 // set the field with the correct Symbol, based on the new active_player
                 $event.target.innerHTML = $scope.active_player == $scope.player_1 ? "X" : "O";
@@ -45,8 +44,16 @@ TicTacToeApp.controller('GameCtrl', ['$scope', '$http', '$log',
 
     // resets the game, allowing people to play again.
     $scope.resetGame = function() {
-
+        $http.post("/game/reset", {})
+            .success(function(data, status, headers, config) {
+                $window.location.reload();
+            })
     };
+
+    // Shows the ranking of the game.
+    $scope.displayRanking = function() {
+        $window.location = "/score"
+    }
 }]);
 
 // Filter to properly display the winner or not

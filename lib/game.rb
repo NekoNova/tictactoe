@@ -15,6 +15,7 @@ class Game
   PLAYER_1_SYMBOL = "O"
   PLAYER_2_SYMBOL = "X"
   attr_accessor :player_1, :player_2, :grid, :moves, :winner, :active_player
+  attr_accessor :player_1_score, :player_2_score
 
   # Initializes a new instance of the game, and stores the provided information in the
   # internal variables.
@@ -25,6 +26,8 @@ class Game
   def initialize(player_1 = "player 1", player_2 = "player 2")
     @player_1 = player_1
     @player_2 = player_2
+    @player_1_score = 0
+    @player_2_score = 0
     init_game
   end
 
@@ -43,18 +46,15 @@ class Game
     false
   end
 
-  # Returns the value in the specified row and column of the board.
-  # If the operation fails or no value is set, nil is returned.
-  def get(row,col)
-    @grid[row][col] rescue nil
-  end
-
   # Determines if the game has a winner, and configures the instance when this is the case.
   # The function returns true if the game has a winner; and sets the @winner var to this player.
   # If no winner is there for the game, false is returned instead.
   def winner?
+    return true if @winner # if the winner is already set don't recalculate.
+
     @grid.each do |row| # iterate each row
       if horizontal_conditions(row)
+        puts "matched row"
         set_winner(row[0])
         return true
       end
@@ -62,12 +62,14 @@ class Game
 
     (0..3).each do |col|  # Iterate each column
       if vertical_conditions(col)
+        puts "matches column"
         set_winner(@grid[0][col])
         return true
       end
     end
 
     if cross_conditions # Check the diagonals
+      puts "matches cross"
       set_winner(@grid[1][1])
       return true
     end
@@ -89,6 +91,12 @@ class Game
   # Sets the winner based on the provided field to check for the winning value.
   def set_winner(field)
     @winner = field.eql?(PLAYER_1_SYMBOL) ? @player_1 : @player_2
+
+    if @winner.eql?(@player_1)
+      @player_1_score += 1
+    else
+      @player_2_score += 1
+    end
   end
 
   # Determines if the provided row has winning conditions for the game.
@@ -109,7 +117,8 @@ class Game
   # The cross checks both Diagonals for matching symbols and returns true
   # if this is the case; otherwise false.
   def cross_conditions
-    (@grid[0][0] != nil && @grid[0][0].eql?(@grid[1][1]) && @grid[0][0].eql?(@grid[2][2])) ||
-        (@grid[0][2] != nil && @grid[0][2].eql?(@grid[1][1]) && @grid[0][0].eql?(@grid[2][0]))
+    return true if @grid[0][0] != nil && @grid[0][0].eql?(@grid[1][1]) && @grid[0][0].eql?(@grid[2][2])
+    return true if @grid[0][2] != nil && @grid[0][2].eql?(@grid[1][1]) && @grid[0][2].eql?(@grid[2][0])
+    false
   end
 end

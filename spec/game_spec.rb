@@ -42,6 +42,54 @@ RSpec.describe Game, "#winner" do
       expect(@game.moves).to eq 5
       expect(@game.winner).to eq "player 1"
     end
+
+    it "updates the score properly" do
+      @game.set(0,0,Game::PLAYER_1_SYMBOL)
+      @game.set(1,0,Game::PLAYER_2_SYMBOL)
+      @game.set(0,1,Game::PLAYER_1_SYMBOL)
+      @game.set(2,0,Game::PLAYER_2_SYMBOL)
+      @game.set(0,2,Game::PLAYER_1_SYMBOL)
+
+      expect(@game.winner?).to be_truthy
+      expect(@game.player_1_score).to eq 1
+    end
+
+    it "does not change the settings after a winner is declared" do
+      @game.set(0,0,Game::PLAYER_1_SYMBOL)
+      @game.set(1,0,Game::PLAYER_2_SYMBOL)
+      @game.set(0,1,Game::PLAYER_1_SYMBOL)
+      @game.set(2,0,Game::PLAYER_2_SYMBOL)
+      @game.set(0,2,Game::PLAYER_1_SYMBOL)
+
+      expect(@game.winner?).to be_truthy
+      expect(@game.winner).to eq "player 1"
+
+
+      @game.set(0,0,Game::PLAYER_2_SYMBOL)
+      @game.set(0,1,Game::PLAYER_2_SYMBOL)
+      @game.set(0,2,Game::PLAYER_2_SYMBOL)
+
+      expect(@game.winner?).to be_truthy
+      expect(@game.winner).to eq "player 1"
+    end
+
+    it "does not set a winner after 9 moves" do
+      # O O X
+      # X X O
+      # O O X
+      @game.set(0,0,Game::PLAYER_1_SYMBOL)
+      @game.set(0,1,Game::PLAYER_1_SYMBOL)
+      @game.set(0,2,Game::PLAYER_2_SYMBOL)
+      @game.set(1,0,Game::PLAYER_2_SYMBOL)
+      @game.set(1,1,Game::PLAYER_2_SYMBOL)
+      @game.set(1,2,Game::PLAYER_1_SYMBOL)
+      @game.set(2,0,Game::PLAYER_1_SYMBOL)
+      @game.set(2,1,Game::PLAYER_1_SYMBOL)
+      @game.set(2,2,Game::PLAYER_2_SYMBOL)
+
+      expect(@game.winner?).to be_falsey
+      expect(@game.winner).to be_nil
+    end
   end
 end
 

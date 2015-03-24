@@ -1,0 +1,14 @@
+.container
+  %h1 TicTacToe Score Board
+  %table.table.bordered
+    %thead
+      %tr
+        %td= @game.player_1
+        %td= @game.player_2
+    %tbody
+      %tr
+        %td= @game.player_1_score
+        %td= @game.player_2_score
+  %p
+    %a.btn.btn-default{ href: "/" }
+      Play Again
