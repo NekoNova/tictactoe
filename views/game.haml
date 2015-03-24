@@ -40,7 +40,7 @@
             %td{ :"ng-click" => "setField($event,2,1); $event.stopPropagation()" }
             %td{ :"ng-click" => "setField($event,2,2); $event.stopPropagation()" }
         .progress.progress-striped.active
-          .progress-bar{role: "progressbar", :"aria-valuenow" => "{{moves}}", :"aria-valuemin" => 0, :"aria-valuemax" => 9}
+          .progress-bar{role: "progressbar", :"aria-valuenow" => "{{moves}}", :"aria-valuemin" => 0, :"aria-valuemax" => 9, style: "width: {{percentage}}%;"}
             %span.sr-only
               {{moves}} moves out of 9
       .col-md-3

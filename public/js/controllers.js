@@ -34,6 +34,7 @@ TicTacToeApp.controller('GameCtrl', ['$scope', '$http', '$window',
                 $scope.active_player = data.active_player;
                 $scope.moves = data.moves;
                 $scope.winner = data.winner;
+                $scope.percentage = (data.moves / 9) * 100;
                 // set the field with the correct Symbol, based on the new active_player
                 $event.target.innerHTML = $scope.active_player == $scope.player_1 ? "X" : "O";
             })
